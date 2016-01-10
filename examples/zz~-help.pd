@@ -1,0 +1,5 @@
+#N canvas 176 264 450 300 10;
+#X obj 134 96 zz~ 1000 pl;
+#X obj 164 151 print;
+#X msg 263 49 \; pl 0 0 0.25 0.5 0.75;
+#X connect 0 0 1 0;
