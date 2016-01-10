@@ -1,4 +1,4 @@
-#N canvas 275 235 705 343 10;
+#N canvas 162 321 705 343 10;
 #X obj 484 116 table pl-1 4;
 #X obj 80 172 noise~;
 #X obj 139 230 *~;
@@ -11,8 +11,8 @@
 #X obj 218 113 zz 1000 pl-2;
 #X msg 189 24 4000;
 #X obj 160 61 zz 1000 pl-1;
-#X obj 281 82 print;
 #X msg 402 30 \; update bang;
+#X floatatom 123 20 5 0 0 0 - - -, f 5;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
@@ -20,4 +20,4 @@
 #X connect 9 0 3 0;
 #X connect 10 0 11 0;
 #X connect 11 1 9 0;
-#X connect 11 1 12 0;
+#X connect 13 0 11 0;
