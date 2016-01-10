@@ -1,0 +1,19 @@
+// legt einen Zeitzähler und eine Phasenliste an
+(zz <name0> 120bpm (0 0.6))
+
+(pl <name1> (0 0.6))
+(zz <name2> 120bpm <name1>)
+
+// neue liste
+(pl <name3> (krebs <name1>))
+
+// liste verändern
+(change <name1> humanize)
+(change <name1> krebs)
+(change <name1> <effect>)
+
+(part <name1> <from> <to>)          // phase values
+(part <name1> <length> <offset>)    // phase values
+(part <name1> <n-element> <offset>) // index values
+
+(pl <name4> (krebs (part <name1> <from> <to>)))

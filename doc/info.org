@@ -1,0 +1,113 @@
+* Score Files inspired by Org-Mode
+.orgs Dateien dienen dazu /musikalische/ Ideen und Sachverhalte in einer für Menschen lesbaren Form und von eBrains (Computer) interpretierbaren Form darzustellen. Eingabe sind Textdateien, Ausgabe Audio-, Steuer-, und/oder eine andere visuelle Darstellung, wie etwa ein Pd-Patch, Notenschrift (lilypond), Plots oder MIDI Dateien zum weiteren Gebrauch.
+
+** Zeit bezüge
+*** func zz - ZeitZähler
+**** Beschreibung
+zentrales Element im orgs-mode. 
+
+@argument   T   Periodendauer
+@argument   PL  Pointer zu einer Phasenliste
+
+Ein Positionszeiger, der mit konstanter Geschwindigkeit von 0% bis 100% hochzählt.
+Die Idee ist, dass eine Zeiteinheit durch einen Kreis dargestellt wird. Eine Umdrehung kann je nach Geschwindigkeit ein Formteil, ein Takt, ein ganzes Musikstück oder eine Periode z.B. einer Wavetable sein.
+
+Wenn der Wert gleich einem Zeitpunkt einer referenzierten PhasesListe entpricht sendet der Zähler einen Trigger (z.B. bang, Parameter der PhasenListe).
+
+Ein Audioeingang [ain] wird auf den Momentanwert addiert. Damit ist es z.B. möglich, das Tempo schwanken zu lassen. 
+
+Mit jedem Trigger wird die erwartete zeitliche Entfernung des nächsten Trigger gesendet.
+
+**** Wertebereich
+- [0,1)norm
+- [0,2π)rad
+- [0,360)deg
+- [0,100)%
+
+**** Realisiertung
+
+Position:
+(t/T + ain) mod(1) .
+
+Trigger:
+[ PL(any) * T == position ]
+
+Prognose:
+PL(i+1) - PL(i) * T.
+
+
+
+** Datentypen
+*** list PL - PhasenListe
+Datentyp zur Darstellung von Teilungsverhältnissen.
+
+**** Beispiele
+(0 0.25 0.5 0.75) Viertelnoten
+(0.62) verschobener Offbeat
+((0 1) (1/3 0.6) (2/3 0.6)) Liste mit Parametern
+
+**** Phasen Erzeuger
+
+***** tet - time equal temperament
+fügt n Triggerpunkte gleichverteilt hinzu
+
+tet(4)
+=> (0 0.25 0.5 0.75)
+***** cal
+***** fft
+
+**** Daten Manipulatoren
+***** krebs - reverse
+o = (1-i) mod(1)
+
+***** spiegel 
+***** shift
+- Triggerpunkte um tao verschieben (links rechts)
+(0 0.25 0.5 0.75)
+(0.1 0.35 0.6 0.85) shift trigger right 0.1
+- Parameter Werte verschieben
+((0 1) (0.25 2) (0.5 3) (0.75 4))
+((0 2) (0.25 3) (0.5 4) (0.75 1)) shift param left 1
+***** humanize
+***** beat repeat
+***** invert parameter
+***** logische verknüpfung 2er Phasenlisten
+***** parameter list mapping
+beliebeig lange Liste mit beliebigen Daten kann auf eine Phasen liste als Parameter gemapped werden. 
+- zero padding
+- Bereich aus 
+
+(0 0.6) Phasenliste
+(c es g) Paramter
+
+Bsp. 1:
+((0 c) (0.6 es))
+((0 es) (0.6 g)) mit offset
+
+Bsp. 2:
+((0 c) (0.6 es) (0 g) (0.6 c) (0 es) (0.6 g))
+
+
+[zz "groove1" 120bpm (0 0.6) (0.1)] == [zz 120bpm (0 0.1 0.6)]
+| <-bang
+[data (c es g)]
+| <-(char) = (pitch)
+Bsp. 2...
+|
+[data (1 0.7 0.6)]
+| <-(char float) = (pitch amp) 
+| 
+[super cooler synthesizer] 
+***** stretch function
+                       
+**** Parameter
+- Pitch
+- Amp
+- length (duration)
+
+** Strukur
+*** Routing Matrix
+| phasenlisten | ZeitZähler | Messages | Audio |
+|--------------+------------+----------+-------|
+| groove1.0    | groove1    |          |       |
+| groove1.1    |            |          |       |
