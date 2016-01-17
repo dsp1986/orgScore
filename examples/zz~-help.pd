@@ -1,5 +1,13 @@
-#N canvas 176 264 450 300 10;
-#X obj 134 96 zz~ 1000 pl;
-#X obj 164 151 print;
-#X msg 263 49 \; pl 0 0 0.25 0.5 0.75;
+#N canvas 504 253 450 300 10;
+#X obj 84 114 zz~ 1000 pl;
+#X obj 84 175 print;
+#X floatatom 116 64 5 0 0 0 - - -, f 5;
+#X msg 277 103 0 0.5 0.75;
+#X obj 267 153 update-pl pl;
+#X msg 275 81 0 0.25 0.5 0.75;
+#X msg 269 61 0 0.3 0.6;
 #X connect 0 0 1 0;
+#X connect 2 0 0 1;
+#X connect 3 0 4 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
