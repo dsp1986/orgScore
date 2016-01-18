@@ -1,0 +1,4 @@
+#N canvas 312 265 450 300 10;
+#X obj 98 124 r receives;
+#X obj 98 146 org-oscsend \$1 \$2;
+#X connect 0 0 1 0;
